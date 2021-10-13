@@ -507,7 +507,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
-	 * Return the list of statically specified ApplicationListeners.
+	 * refresh 方法包含了几乎 ApplicationContext 中提供的全部功能
 	 */
 	public Collection<ApplicationListener<?>> getApplicationListeners() {
 		return this.applicationListeners;
@@ -516,17 +516,17 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
-			// Prepare this context for refreshing.
+			// 准备刷新的上下文环境
 			prepareRefresh();
 
-			// Tell the subclass to refresh the internal bean factory.
+			// 初始化 BeanFactory，并进行资源文件读取
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
-			// Prepare the bean factory for use in this context.
+			// 填充 BeanFactory 各种功能，ApplicationContext 开始对 BeanFactory 的功能扩展
 			prepareBeanFactory(beanFactory);
 
 			try {
-				// Allows post-processing of the bean factory in context subclasses.
+				// 子类覆盖方法做额外的处理
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
@@ -535,19 +535,19 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Register bean processors that intercept bean creation.
 				registerBeanPostProcessors(beanFactory);
 
-				// Initialize message source for this context.
+				// 国际化处理
 				initMessageSource();
 
-				// Initialize event multicaster for this context.
+				// 初始化事件传播器
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
 				onRefresh();
 
-				// Check for listener beans and register them.
+				// 注册监听器
 				registerListeners();
 
-				// Instantiate all remaining (non-lazy-init) singletons.
+				// 初始化非延迟加载单例
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
@@ -597,11 +597,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			}
 		}
 
-		// Initialize any placeholder property sources in the context environment.
+		// 留给子类覆盖，给用户最大的扩展 Spring 的能力，用户可以重写并进行个性化的属性处理和设置
 		initPropertySources();
 
 		// Validate that all properties marked as required are resolvable:
 		// see ConfigurablePropertyResolver#setRequiredProperties
+		// 验证需要的属性文件是否都已经放入环境中
 		getEnvironment().validateRequiredProperties();
 
 		// Store pre-refresh ApplicationListeners...
@@ -629,13 +630,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
-	 * Tell the subclass to refresh the internal bean factory.
-	 * @return the fresh BeanFactory instance
-	 * @see #refreshBeanFactory()
-	 * @see #getBeanFactory()
+	 * 经过这个函数后，ApplicationContext 几乎拥有了 BeanFactory 全部功能
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
+		// 初始化 BeanFactory，并进行资源读取，并将得到的 BeanFactory 记录在当前实体的属性中
 		refreshBeanFactory();
+		// 返回当前实体的 BeanFactory
 		return getBeanFactory();
 	}
 
@@ -650,7 +650,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
-		// Configure the bean factory with context callbacks.
+		// 添加 BeanPostProcessor
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
 		beanFactory.ignoreDependencyInterface(EnvironmentAware.class);
 		beanFactory.ignoreDependencyInterface(EmbeddedValueResolverAware.class);
@@ -757,9 +757,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
-	 * Initialize the ApplicationEventMulticaster.
-	 * Uses SimpleApplicationEventMulticaster if none defined in the context.
-	 * @see org.springframework.context.event.SimpleApplicationEventMulticaster
+	 * 如果用户自定义了事件传播器，则使用用户自定义的；否则使用默认的 ApplicationEventMulticaster
 	 */
 	protected void initApplicationEventMulticaster() {
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
@@ -771,6 +769,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			}
 		}
 		else {
+			// SimpleApplicationEventMulticaster 为默认的事件传播器实现
 			this.applicationEventMulticaster = new SimpleApplicationEventMulticaster(beanFactory);
 			beanFactory.registerSingleton(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, this.applicationEventMulticaster);
 			if (logger.isTraceEnabled()) {
