@@ -1,4 +1,4 @@
-package bean;
+package cn.analysis.bean;
 
 /**
  * @author zhaojie

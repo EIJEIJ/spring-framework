@@ -1,4 +1,4 @@
-package core;
+package cn.analysis.core;
 
 /**
  * @author zhaojie

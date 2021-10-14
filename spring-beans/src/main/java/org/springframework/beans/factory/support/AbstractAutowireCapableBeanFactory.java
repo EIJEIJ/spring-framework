@@ -618,6 +618,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 						}
 					}
 					if (!actualDependentBeans.isEmpty()) {
+						// 当一个需要被代理的 bean 出现循环依赖的时候，容易报这个异常
+						// 原因是提前暴露的 bean 和最终注入的 bean 版本不一致
+						// 解决方法：debug 此处，看是哪个 bean 导致的，进而解决循环依赖 or 懒加载
 						throw new BeanCurrentlyInCreationException(beanName,
 								"Bean with name '" + beanName + "' has been injected into other beans [" +
 								StringUtils.collectionToCommaDelimitedString(actualDependentBeans) +

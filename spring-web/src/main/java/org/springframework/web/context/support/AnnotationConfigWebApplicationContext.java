@@ -196,6 +196,7 @@ public class AnnotationConfigWebApplicationContext extends AbstractRefreshableWe
 	 */
 	@Override
 	protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) {
+		// 获取读取器和扫描器
 		AnnotatedBeanDefinitionReader reader = getAnnotatedBeanDefinitionReader(beanFactory);
 		ClassPathBeanDefinitionScanner scanner = getClassPathBeanDefinitionScanner(beanFactory);
 
@@ -236,6 +237,7 @@ public class AnnotationConfigWebApplicationContext extends AbstractRefreshableWe
 					if (logger.isTraceEnabled()) {
 						logger.trace("Registering [" + configLocation + "]");
 					}
+					// 通过读取器将指定的类注册成 bean
 					reader.register(clazz);
 				}
 				catch (ClassNotFoundException ex) {
