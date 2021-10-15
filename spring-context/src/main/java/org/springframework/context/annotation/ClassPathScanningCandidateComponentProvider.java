@@ -426,14 +426,22 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 				}
 				if (resource.isReadable()) {
 					try {
+						// 获取类元数据读取器
 						MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
+						// if 语句里处理 excludeFilter 和 includeFilters 逻辑
+						// 在 excludeFilter 里的资源会被过滤，在 includeFilters 里的资源会被进一步解析
 						if (isCandidateComponent(metadataReader)) {
+							// 将单个资源转化成 BeanDefinition，当前 BeanDefinition 只会包含类名和资源文件本身
 							ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 							sbd.setSource(resource);
+							// 判断这个资源文件是否能被正确解析成 bean
+							// 比如判断文件是否是内部类 isIndependent()、接口或抽象类 isConcrete()，这类是无法解析成 bean 的
+							// 还会判断 @LookUp 注解
 							if (isCandidateComponent(sbd)) {
 								if (debugEnabled) {
 									logger.debug("Identified candidate component class: " + resource);
 								}
+								// 放入最终的 BeanDefinition 集合中
 								candidates.add(sbd);
 							}
 							else {

@@ -226,6 +226,7 @@ public class AnnotationConfigWebApplicationContext extends AbstractRefreshableWe
 				logger.debug("Scanning base packages: [" +
 						StringUtils.collectionToCommaDelimitedString(this.basePackages) + "]");
 			}
+			// 扫描器开始扫描包路径
 			scanner.scan(StringUtils.toStringArray(this.basePackages));
 		}
 

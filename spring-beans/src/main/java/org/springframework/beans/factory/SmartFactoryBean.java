@@ -61,6 +61,8 @@ public interface SmartFactoryBean<T> extends FactoryBean<T> {
 	}
 
 	/**
+	 * 如果返回 true，Spring 容器启动的时候就会调用该方法去初始化，调用 getObject() 方法
+	 *
 	 * Does this FactoryBean expect eager initialization, that is,
 	 * eagerly initialize itself as well as expect eager initialization
 	 * of its singleton object (if any)?

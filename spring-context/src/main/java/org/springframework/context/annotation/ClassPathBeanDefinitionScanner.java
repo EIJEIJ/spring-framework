@@ -251,6 +251,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	public int scan(String... basePackages) {
 		int beanCountAtScanStart = this.registry.getBeanDefinitionCount();
 
+		// 扫描
 		doScan(basePackages);
 
 		// Register annotation config processors, if necessary.
@@ -273,21 +274,28 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
 		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
 		for (String basePackage : basePackages) {
+			// 扫描的核心逻辑，在这一步将扫描到的资源解析成 BeanDefinition，在这一步只会包含 bean 的类文件名字和资源本身
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
+			// 进一步解析 BeanDefinition 中的各个属性
 			for (BeanDefinition candidate : candidates) {
+				// 解析作用域
 				ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);
 				candidate.setScope(scopeMetadata.getScopeName());
+				// 解析 beanName
 				String beanName = this.beanNameGenerator.generateBeanName(candidate, this.registry);
 				if (candidate instanceof AbstractBeanDefinition) {
 					postProcessBeanDefinition((AbstractBeanDefinition) candidate, beanName);
 				}
+				// 解析 @Lazy、@Primary、@DependsOn、@Role、@Description 等注解
 				if (candidate instanceof AnnotatedBeanDefinition) {
 					AnnotationConfigUtils.processCommonDefinitionAnnotations((AnnotatedBeanDefinition) candidate);
 				}
+				// if 语句检查该 beanName 是否已经存在，存在则抛 beanName 重复的异常；如果是同一个类扫描了两次，则返回 false，不会抛异常
 				if (checkCandidate(beanName, candidate)) {
 					BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(candidate, beanName);
 					definitionHolder =
 							AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
+					// 注册
 					beanDefinitions.add(definitionHolder);
 					registerBeanDefinition(definitionHolder, this.registry);
 				}
