@@ -58,6 +58,8 @@ public interface SmartInstantiationAwareBeanPostProcessor extends InstantiationA
 	 * @param beanName the name of the bean
 	 * @return the candidate constructors, or {@code null} if none specified
 	 * @throws org.springframework.beans.BeansException in case of errors
+	 *
+	 * 推断构造器相关
 	 */
 	@Nullable
 	default Constructor<?>[] determineCandidateConstructors(Class<?> beanClass, String beanName)

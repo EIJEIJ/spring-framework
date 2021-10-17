@@ -209,6 +209,10 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 	 * @see #getResourceLoader()
 	 * @see #loadBeanDefinitions(org.springframework.core.io.Resource)
 	 * @see #loadBeanDefinitions(org.springframework.core.io.Resource[])
+	 *
+	 * 重载方法之四，AbstractApplicationContext 继承了 DefaultResourceLoader
+	 * 所以，AbstractApplicationContext 及其子类都会调用 DefaultResourceLoader 中的 getResource() 实现，
+	 * 将指定位置的资源文件解析为 Resource，至此完成了对 BeanDefinition 的资源定位
 	 */
 	public int loadBeanDefinitions(String location, @Nullable Set<Resource> actualResources) throws BeanDefinitionStoreException {
 		ResourceLoader resourceLoader = getResourceLoader();
@@ -236,8 +240,10 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 			}
 		}
 		else {
-			// Can only load single resources by absolute URL.
+			// 加载 XML 文件走这一步
 			Resource resource = resourceLoader.getResource(location);
+			// 定位到资源后，开始在这一步将 bean 解析成 beanDefinition
+			// 具体实现在子类 XmlBeanDefinitionReader
 			int count = loadBeanDefinitions(resource);
 			if (actualResources != null) {
 				actualResources.add(resource);
