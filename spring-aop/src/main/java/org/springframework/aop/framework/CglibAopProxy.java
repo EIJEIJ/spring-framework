@@ -101,7 +101,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 	private static final Map<Class<?>, Boolean> validatedClasses = new WeakHashMap<>();
 
 
-	/** The configuration used to configure this proxy. */
+	/** AdvisedSupport 持有一个 List<Advisor>属性 */
 	protected final AdvisedSupport advised;
 
 	@Nullable
@@ -178,7 +178,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 			// Validate the class, writing log messages as necessary.
 			validateClassIfNecessary(proxySuperClass, classLoader);
 
-			// Configure CGLIB Enhancer...
+			// 创建并配置 Enhancer对象，Enhancer 是 CGLIB 中主要的操作类
 			Enhancer enhancer = createEnhancer();
 			if (classLoader != null) {
 				enhancer.setClassLoader(classLoader);
@@ -202,7 +202,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 					this.advised.getConfigurationOnlyCopy(), this.fixedInterceptorMap, this.fixedInterceptorOffset));
 			enhancer.setCallbackTypes(types);
 
-			// Generate the proxy class and create a proxy instance.
+			// 通过 enhancer 生成代理对象
 			return createProxyClassAndInstance(enhancer, callbacks);
 		}
 		catch (CodeGenerationException | IllegalArgumentException ex) {
@@ -216,7 +216,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 		}
 	}
 
-	protected Object createProxyClassAndInstance(Enhancer enhancer, Callback[] callbacks) {
+	protected Object  createProxyClassAndInstance(Enhancer enhancer, Callback[] callbacks) {
 		enhancer.setInterceptDuringConstruction(false);
 		enhancer.setCallbacks(callbacks);
 		return (this.constructorArgs != null && this.constructorArgTypes != null ?

@@ -325,6 +325,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 				// 单例 Bean 处理
 				if (mbd.isSingleton()) {
+					// 如果获取到的 bean 是新的，则会放入一级缓存 singletonObjects
 					sharedInstance = getSingleton(beanName, () -> {
 						try {
 							return createBean(beanName, mbd, args);

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @date 2021/10/14 10:17:54
  */
 @SpringBootApplication
-@ComponentScan(value = {"cn.analysis"})
+// @ComponentScan(value = {"cn.analysis"})
 public class Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);

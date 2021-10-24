@@ -79,7 +79,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 	/** We use a static Log to avoid serialization issues. */
 	private static final Log logger = LogFactory.getLog(JdkDynamicAopProxy.class);
 
-	/** Config used to configure this proxy. */
+	/** AdvisedSupport 持有一个 List<Advisor>属性 */
 	private final AdvisedSupport advised;
 
 	/**
@@ -104,6 +104,8 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 		if (config.getAdvisors().length == 0 && config.getTargetSource() == AdvisedSupport.EMPTY_TARGET_SOURCE) {
 			throw new AopConfigException("No advisors and no TargetSource specified");
 		}
+		// 这个 advised 是一个 AdvisedSupport 对象，可以通过它获取被代理对象 target
+		// 这样，当 invoke()方法 被 代理对象aopProxy 调用时，就可以调用 target 的目标方法了
 		this.advised = config;
 	}
 
@@ -118,8 +120,10 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 		if (logger.isTraceEnabled()) {
 			logger.trace("Creating JDK dynamic proxy: " + this.advised.getTargetSource());
 		}
+		// 获取代理类要实现的接口
 		Class<?>[] proxiedInterfaces = AopProxyUtils.completeProxiedInterfaces(this.advised, true);
 		findDefinedEqualsAndHashCodeMethods(proxiedInterfaces);
+		// 通过 java.lang.reflect.Proxy 生成代理对象并返回
 		return Proxy.newProxyInstance(classLoader, proxiedInterfaces, this);
 	}
 
