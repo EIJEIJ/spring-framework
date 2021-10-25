@@ -79,10 +79,7 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 	@Nullable
 	private Map<String, Object> userAttributes;
 
-	/**
-	 * List of MethodInterceptor and InterceptorAndDynamicMethodMatcher
-	 * that need dynamic checks.
-	 */
+	/** MethodInterceptor 和 InterceptorAndDynamicMethodMatcher 的集合 */
 	protected final List<?> interceptorsAndDynamicMethodMatchers;
 
 	/**
@@ -159,30 +156,34 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 	@Nullable
 	public Object proceed() throws Throwable {
 		// We start with an index of -1 and increment early.
+		// 从拦截器链中按顺序依次调用拦截器，直到所有的拦截器调用完毕，开始调用目标方法
+		// 对目标方法的调用是在 invokeJoinpoint() 中通过 AopUtils 的 invokeJoinpointUsingReflection() 方法完成的
 		if (this.currentInterceptorIndex == this.interceptorsAndDynamicMethodMatchers.size() - 1) {
 			return invokeJoinpoint();
 		}
 
+		// 这里沿着定义好的 interceptorsAndDynamicMethodMatchers 拦截器链进行处理，
+		// 它是一个 List，也没有定义泛型，interceptorOrInterceptionAdvice 是其中的一个元素
 		Object interceptorOrInterceptionAdvice =
 				this.interceptorsAndDynamicMethodMatchers.get(++this.currentInterceptorIndex);
 		if (interceptorOrInterceptionAdvice instanceof InterceptorAndDynamicMethodMatcher) {
-			// Evaluate dynamic method matcher here: static part will already have
-			// been evaluated and found to match.
+			// 这里通过拦截器的方法匹配器 methodMatcher 进行方法匹配，
+			// 如果目标类的目标方法和配置的 Pointcut 匹配，那么这个增强行为 advice 将会被执行
 			InterceptorAndDynamicMethodMatcher dm =
 					(InterceptorAndDynamicMethodMatcher) interceptorOrInterceptionAdvice;
 			Class<?> targetClass = (this.targetClass != null ? this.targetClass : this.method.getDeclaringClass());
+			// 目标类的目标方法是否为 Pointcut 所定义的切面
 			if (dm.methodMatcher.matches(this.method, targetClass, this.arguments)) {
+				// 执行当前这个拦截器 interceptor 的增强方法
 				return dm.interceptor.invoke(this);
 			}
 			else {
-				// Dynamic matching failed.
-				// Skip this interceptor and invoke the next in the chain.
+				// 如果不匹配，那么 process()方法会被递归调用，直到所有的拦截器都被运行过为止
 				return proceed();
 			}
 		}
 		else {
-			// It's an interceptor, so we just invoke it: The pointcut will have
-			// been evaluated statically before this object was constructed.
+			// 如果 interceptorOrInterceptionAdvice 是一个 MethodInterceptor 则直接调用其对应的方法
 			return ((MethodInterceptor) interceptorOrInterceptionAdvice).invoke(this);
 		}
 	}

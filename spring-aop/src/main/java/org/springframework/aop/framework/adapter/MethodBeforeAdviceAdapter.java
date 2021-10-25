@@ -39,6 +39,9 @@ class MethodBeforeAdviceAdapter implements AdvisorAdapter, Serializable {
 		return (advice instanceof MethodBeforeAdvice);
 	}
 
+	/**
+	 * 将 advisor 强转成 MethodBeforeAdvice 后，创建一个 MethodBeforeAdviceInterceptor 对象
+	 */
 	@Override
 	public MethodInterceptor getInterceptor(Advisor advisor) {
 		MethodBeforeAdvice advice = (MethodBeforeAdvice) advisor.getAdvice();

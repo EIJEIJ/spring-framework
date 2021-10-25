@@ -464,15 +464,13 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 					// 获取 Advisor 对应的单例 bean 或者创建原型通知器
 					Object advice;
 					if (this.singleton || this.beanFactory.isSingleton(name)) {
-						// Add the real Advisor/Advice to the chain.
 						advice = this.beanFactory.getBean(name);
 					}
 					else {
-						// It's a prototype Advice or Advisor: replace with a prototype.
-						// Avoid unnecessary creation of prototype bean just for advisor chain initialization.
 						advice = new PrototypePlaceholderAdvisor(name);
 					}
-					// 将通知器加入当前创建链中
+					// 把从 IoC容器 中获取的 advice 放进 advisors 拦截器链，这个拦截器链是由 ProxyFactoryBean
+					// 的父类 AdvisedSupport 持有的
 					addAdvisorOnChainCreation(advice);
 				}
 			}
