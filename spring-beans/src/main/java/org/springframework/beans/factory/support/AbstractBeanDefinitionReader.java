@@ -215,6 +215,7 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 	 * 将指定位置的资源文件解析为 Resource，至此完成了对 BeanDefinition 的资源定位
 	 */
 	public int loadBeanDefinitions(String location, @Nullable Set<Resource> actualResources) throws BeanDefinitionStoreException {
+		// 在实例化 XmlBeanDefinitionReader 后 IoC 容器将自己注入进该读取器作为 resourceLoader 属性
 		ResourceLoader resourceLoader = getResourceLoader();
 		if (resourceLoader == null) {
 			throw new BeanDefinitionStoreException(
