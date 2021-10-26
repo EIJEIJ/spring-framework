@@ -46,6 +46,11 @@ import org.springframework.aop.SpringProxy;
 @SuppressWarnings("serial")
 public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 
+	/**
+	 * 从这里可以看出 Spring AOP 选择 JDK 动态代理 或者 CGLIB 的逻辑：
+	 * 1. 如果目标对象实现了接口，默认情况下采用 JDK 动态代理，但可以强制使用 CGLIB 实现
+	 * 2. 如果目标对象没有实现接口，必须采用 CGLIB
+	 */
 	@Override
 	public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException {
 		// 首先从 AdvisedSupport 对象中获取配置的 target 目标对象的类型 targetClass，

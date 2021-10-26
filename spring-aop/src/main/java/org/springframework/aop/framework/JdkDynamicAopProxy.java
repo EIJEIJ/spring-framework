@@ -177,6 +177,8 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 				// There is only getDecoratedClass() declared -> dispatch to proxy config.
 				return AopProxyUtils.ultimateTargetClass(this.advised);
 			}
+			// isAssignableFrom 方法：
+			// 如果调用该方法的 class 或者 interface 与参数 cls 表示的相同或者是父子类，则返回 true
 			else if (!this.advised.opaque && method.getDeclaringClass().isInterface() &&
 					method.getDeclaringClass().isAssignableFrom(Advised.class)) {
 				// 使用代理配置对 proxyConfig 进行服务调用
@@ -185,8 +187,8 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 
 			Object retVal;
 
+			// 有时目标对象内部的自我调用将无法实施切面中的增强，则需要通过此属性暴露代理
 			if (this.advised.exposeProxy) {
-				// Make invocation available if necessary.
 				oldProxy = AopContext.setCurrentProxy(proxy);
 				setProxyContext = true;
 			}
@@ -205,7 +207,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 			}
 			else {
 				// 如果有拦截器链，则需要先调用拦截器链中的拦截器，再调用目标的对应方法
-				// 这里通过构造 ReflectiveMethodInvocation 来实现
+				// 这里通过构造 ReflectiveMethodInvocation 来实现，便于使用其 proceed()
 				MethodInvocation invocation =
 						new ReflectiveMethodInvocation(proxy, target, method, args, targetClass, chain);
 				// 沿着拦截器链继续向下处理

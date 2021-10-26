@@ -183,7 +183,11 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 			}
 		}
 		else {
-			// 如果 interceptorOrInterceptionAdvice 是一个 MethodInterceptor 则直接调用其对应的方法
+			// 如果 interceptorOrInterceptionAdvice 是一个 MethodInterceptor 则直接调用其对应的方法，比如：
+			// ExposeInvocationInterceptor、
+			// DelegatePerTargetObjectIntroductionInterceptor、
+			// MethodBeforeAdviceInterceptor、
+			// AspectJAroundAdvice、AspectJAfterAdvice
 			return ((MethodInterceptor) interceptorOrInterceptionAdvice).invoke(this);
 		}
 	}
