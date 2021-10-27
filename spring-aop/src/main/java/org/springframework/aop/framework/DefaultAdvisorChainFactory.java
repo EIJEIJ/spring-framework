@@ -82,9 +82,11 @@ public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializ
 					// 拦截器链是通过 AdvisorAdapterRegistry 的实例对象 registry 来加入的，
 					// AdvisorAdapterRegistry 对 advisor 的织入起到了很大的作用
 					if (match) {
+						// 所有的 Advice 实际上都是 MethodInterceptor
 						MethodInterceptor[] interceptors = registry.getInterceptors(advisor);
 						if (mm.isRuntime()) {
 							for (MethodInterceptor interceptor : interceptors) {
+								// InterceptorAndDynamicMethodMatcher 用作程序运行时的方法参数匹配
 								interceptorList.add(new InterceptorAndDynamicMethodMatcher(interceptor, mm));
 							}
 						}

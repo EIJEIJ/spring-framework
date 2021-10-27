@@ -161,12 +161,12 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 		Object oldProxy = null;
 		boolean setProxyContext = false;
 
-		// 获取目标对象源
+		// 获取目标对象源，this.advised 实际上就是 ProxyFactory
 		TargetSource targetSource = this.advised.targetSource;
 		Object target = null;
 
 		try {
-			// 如果目标对象调用的是 Object 中的基本方法，如 equals()、hashCode() 则进行相应的处理
+			// 如果目标对象调用的是 Object 中的基本方法，如 equals()、hashCode() 则不代理
 			if (!this.equalsDefined && AopUtils.isEqualsMethod(method)) {
 				return equals(args[0]);
 			}
@@ -189,6 +189,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 
 			// 有时目标对象内部的自我调用将无法实施切面中的增强，则需要通过此属性暴露代理
 			if (this.advised.exposeProxy) {
+				// 将代理对象放到 ThreadLocal 中去，之后可以用 AopContext.currentProxy() 获取当前代理对象
 				oldProxy = AopContext.setCurrentProxy(proxy);
 				setProxyContext = true;
 			}
