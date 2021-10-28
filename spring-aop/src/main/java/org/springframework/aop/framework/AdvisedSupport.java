@@ -479,6 +479,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 		MethodCacheKey cacheKey = new MethodCacheKey(method);
 		List<Object> cached = this.methodCache.get(cacheKey);
 		if (cached == null) {
+			// this 实际上就是创建代理对象时 new 出来的 ProxyFactory
 			cached = this.advisorChainFactory.getInterceptorsAndDynamicInterceptionAdvice(
 					this, method, targetClass);
 			this.methodCache.put(cacheKey, cached);
