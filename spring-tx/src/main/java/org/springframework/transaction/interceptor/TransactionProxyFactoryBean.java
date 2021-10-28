@@ -110,11 +110,14 @@ import org.springframework.transaction.PlatformTransactionManager;
  * @see #setTransactionAttributes
  * @see TransactionInterceptor
  * @see org.springframework.aop.framework.ProxyFactoryBean
+ *
+ * 代理工厂bean 用于简化声明式事务处理,这是标准 AOP 的一个方便的替代方案
+ * 使用单独的TransactionInterceptor定义。
  */
 @SuppressWarnings("serial")
 public class TransactionProxyFactoryBean extends AbstractSingletonProxyFactoryBean
 		implements BeanFactoryAware {
-
+	/** 事务拦截器，通过 AOP 来发挥作用，Spring 在此拦截器中封装了事务处理实现 */
 	private final TransactionInterceptor transactionInterceptor = new TransactionInterceptor();
 
 	@Nullable
@@ -122,9 +125,8 @@ public class TransactionProxyFactoryBean extends AbstractSingletonProxyFactoryBe
 
 
 	/**
-	 * Set the default transaction manager. This will perform actual
-	 * transaction management: This class is just a way of invoking it.
-	 * @see TransactionInterceptor#setTransactionManager
+	 * 通过依赖注入的事务属性以 properties 的形式出现
+	 * 把从 BeanDefinition 中读到的事务管理属性信息注入到 transactionInterceptor
 	 */
 	public void setTransactionManager(PlatformTransactionManager transactionManager) {
 		this.transactionInterceptor.setTransactionManager(transactionManager);
@@ -187,16 +189,22 @@ public class TransactionProxyFactoryBean extends AbstractSingletonProxyFactoryBe
 
 
 	/**
-	 * Creates an advisor for this FactoryBean's TransactionInterceptor.
+	 * 为 TransactionInterceptor 创建一个 advisor
+	 * IoC 容器完成 Bean 的依赖注入时，通过 initializeBean() 方法调用父类 afterPropertiesSet() 后再调用到此方法
+	 * @see org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#invokeInitMethods
+	 * @see AbstractSingletonProxyFactoryBean#afterPropertiesSet
 	 */
 	@Override
 	protected Object createMainInterceptor() {
+		// 校验 transactionManager、beanFactory、transactionAttributeSource参数
 		this.transactionInterceptor.afterPropertiesSet();
 		if (this.pointcut != null) {
+			// 如果有自定义的切面，就使用默认的通知器，并为其配置 transactionInterceptor
 			return new DefaultPointcutAdvisor(this.pointcut, this.transactionInterceptor);
 		}
 		else {
-			// Rely on default pointcut.
+			// 如果没有自定义的切面，使用 Spring 默认的切面
+			// Spring 使用这个通知器来完成对事务处理属性值的处理
 			return new TransactionAttributeSourceAdvisor(this.transactionInterceptor);
 		}
 	}

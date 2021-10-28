@@ -243,6 +243,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 	 * @see NameMatchTransactionAttributeSource
 	 */
 	public void setTransactionAttributes(Properties transactionAttributes) {
+		// NameMatchTransactionAttributeSource 是实际完成事务处理属性读入和匹配的地方，持有一个 nameMap
 		NameMatchTransactionAttributeSource tas = new NameMatchTransactionAttributeSource();
 		tas.setProperties(transactionAttributes);
 		this.transactionAttributeSource = tas;

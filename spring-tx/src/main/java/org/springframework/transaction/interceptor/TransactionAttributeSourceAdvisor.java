@@ -40,9 +40,15 @@ import org.springframework.util.Assert;
 @SuppressWarnings("serial")
 public class TransactionAttributeSourceAdvisor extends AbstractPointcutAdvisor {
 
+	/**
+	 * 定义 Advisor 标准的 Interceptor 和 Pointcut
+	 */
 	@Nullable
 	private TransactionInterceptor transactionInterceptor;
 
+	/**
+	 * 使用匿名内部类定义切面，使用 transactionInterceptor 的 TransactionAttributeSource 属性进行配置
+	 */
 	private final TransactionAttributeSourcePointcut pointcut = new TransactionAttributeSourcePointcut() {
 		@Override
 		@Nullable
