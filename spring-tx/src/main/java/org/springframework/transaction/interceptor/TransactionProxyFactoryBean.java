@@ -111,8 +111,8 @@ import org.springframework.transaction.PlatformTransactionManager;
  * @see TransactionInterceptor
  * @see org.springframework.aop.framework.ProxyFactoryBean
  *
- * 代理工厂bean 用于简化声明式事务处理,这是标准 AOP 的一个方便的替代方案
- * 使用单独的TransactionInterceptor定义。
+ * 代理工厂 bean 用于简化声明式事务处理, 这是标准 AOP 的一个方便的替代方案
+ * 使用单独的 TransactionInterceptor 定义。
  */
 @SuppressWarnings("serial")
 public class TransactionProxyFactoryBean extends AbstractSingletonProxyFactoryBean

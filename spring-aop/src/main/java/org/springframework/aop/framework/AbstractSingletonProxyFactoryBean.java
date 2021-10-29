@@ -221,6 +221,9 @@ public abstract class AbstractSingletonProxyFactoryBean extends ProxyConfig
 	}
 
 
+	/**
+	 * 此时的代理对象已经封装了对事务处理的拦截器配置
+	 */
 	@Override
 	public Object getObject() {
 		if (this.proxy == null) {
