@@ -563,7 +563,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 	protected TransactionInfo createTransactionIfNecessary(@Nullable PlatformTransactionManager tm,
 			@Nullable TransactionAttribute txAttr, final String joinpointIdentification) {
 
-		// If no name specified, apply method identification as transaction name.
+		// 如果未指定名称，则使用方法特征作为事务名称
 		if (txAttr != null && txAttr.getName() == null) {
 			txAttr = new DelegatingTransactionAttribute(txAttr) {
 				@Override
@@ -572,10 +572,13 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 				}
 			};
 		}
-
+		// TransactionStatus 封装了事务执行的状态信息
 		TransactionStatus status = null;
 		if (txAttr != null) {
 			if (tm != null) {
+				// 根据定义好的事务方法配置信息 TransactionAttribute，
+				// 通过 PlatformTransactionManager 创建事务，
+				// 同时返回 TransactionStatus 来记录当前的事务状态，包括已经创建的事务
 				status = tm.getTransaction(txAttr);
 			}
 			else {
@@ -585,6 +588,8 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 				}
 			}
 		}
+		// 准备 TransactionInfo，TransactionInfo 对象封装了事务处理的配置信息以及 TransactionStatus
+		// 会将 TransactionInfo 和当前线程的 ThreadLocal 变量进行绑定
 		return prepareTransactionInfo(tm, txAttr, joinpointIdentification, status);
 	}
 
@@ -626,9 +631,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 	}
 
 	/**
-	 * Execute after successful completion of call, but not after an exception was handled.
-	 * Do nothing if we didn't create a transaction.
-	 * @param txInfo information about the current transaction
+	 * 通过直接调用 TransactionManager 来完成事务的提交
 	 */
 	protected void commitTransactionAfterReturning(@Nullable TransactionInfo txInfo) {
 		if (txInfo != null && txInfo.getTransactionStatus() != null) {

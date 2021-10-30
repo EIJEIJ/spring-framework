@@ -33,6 +33,8 @@ public enum Propagation {
 	 * Support a current transaction, create a new one if none exists.
 	 * Analogous to EJB transaction attribute of the same name.
 	 * <p>This is the default setting of a transaction annotation.
+	 *
+	 * 有事务则加入，没有则新建
 	 */
 	REQUIRED(TransactionDefinition.PROPAGATION_REQUIRED),
 
@@ -46,12 +48,16 @@ public enum Propagation {
 	 * will be shared for the entire specified scope. Note that this depends on
 	 * the actual synchronization configuration of the transaction manager.
 	 * @see org.springframework.transaction.support.AbstractPlatformTransactionManager#setTransactionSynchronization
+	 *
+	 * 有事务就用，如果没有就不开启(继承关系)
 	 */
 	SUPPORTS(TransactionDefinition.PROPAGATION_SUPPORTS),
 
 	/**
 	 * Support a current transaction, throw an exception if none exists.
 	 * Analogous to EJB transaction attribute of the same name.
+	 *
+	 * 必须在已有事务中
 	 */
 	MANDATORY(TransactionDefinition.PROPAGATION_MANDATORY),
 
@@ -64,6 +70,8 @@ public enum Propagation {
 	 * which requires the {@code javax.transaction.TransactionManager} to be
 	 * made available to it (which is server-specific in standard Java EE).
 	 * @see org.springframework.transaction.jta.JtaTransactionManager#setTransactionManager
+	 *
+	 * 不管是否已有事务，都要开启新事务，老事务挂起
 	 */
 	REQUIRES_NEW(TransactionDefinition.PROPAGATION_REQUIRES_NEW),
 
@@ -76,12 +84,16 @@ public enum Propagation {
 	 * which requires the {@code javax.transaction.TransactionManager} to be
 	 * made available to it (which is server-specific in standard Java EE).
 	 * @see org.springframework.transaction.jta.JtaTransactionManager#setTransactionManager
+	 *
+	 * 不开启事务
 	 */
 	NOT_SUPPORTED(TransactionDefinition.PROPAGATION_NOT_SUPPORTED),
 
 	/**
 	 * Execute non-transactionally, throw an exception if a transaction exists.
 	 * Analogous to EJB transaction attribute of the same name.
+	 *
+	 * 必须在没有事务的方法中调用，否则抛出异常
 	 */
 	NEVER(TransactionDefinition.PROPAGATION_NEVER),
 
@@ -93,6 +105,8 @@ public enum Propagation {
 	 * DataSourceTransactionManager. Some JTA providers might support nested
 	 * transactions as well.
 	 * @see org.springframework.jdbc.datasource.DataSourceTransactionManager
+	 *
+	 * 如果已有事务，则嵌套执行，如果没有，就新建(和REQUIRED类似，和REQUIRES_NEW容易混淆)
 	 */
 	NESTED(TransactionDefinition.PROPAGATION_NESTED);
 

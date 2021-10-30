@@ -43,6 +43,8 @@ public enum Isolation {
 	 * (a "dirty read"). If any of the changes are rolled back, the second
 	 * transaction will have retrieved an invalid row.
 	 * @see java.sql.Connection#TRANSACTION_READ_UNCOMMITTED
+	 *
+	 * 读未提交
 	 */
 	READ_UNCOMMITTED(TransactionDefinition.ISOLATION_READ_UNCOMMITTED),
 
@@ -51,6 +53,8 @@ public enum Isolation {
 	 * and phantom reads can occur. This level only prohibits a transaction
 	 * from reading a row with uncommitted changes in it.
 	 * @see java.sql.Connection#TRANSACTION_READ_COMMITTED
+	 *
+	 * 读已提交
 	 */
 	READ_COMMITTED(TransactionDefinition.ISOLATION_READ_COMMITTED),
 
@@ -62,6 +66,8 @@ public enum Isolation {
 	 * alters the row, and the first transaction rereads the row, getting
 	 * different values the second time (a "non-repeatable read").
 	 * @see java.sql.Connection#TRANSACTION_REPEATABLE_READ
+	 *
+	 * 可重复读
 	 */
 	REPEATABLE_READ(TransactionDefinition.ISOLATION_REPEATABLE_READ),
 
@@ -74,6 +80,8 @@ public enum Isolation {
 	 * {@code WHERE} condition, and the first transaction rereads for the
 	 * same condition, retrieving the additional "phantom" row in the second read.
 	 * @see java.sql.Connection#TRANSACTION_SERIALIZABLE
+	 *
+	 * 可串行化
 	 */
 	SERIALIZABLE(TransactionDefinition.ISOLATION_SERIALIZABLE);
 
