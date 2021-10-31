@@ -3,6 +3,7 @@ package cn.analysis.aop;
 import cn.analysis.Application;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author zhaojie
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TargetService {
 
+	@Transactional
 	public void targetMethod() {
 		System.out.println("Target method invoked...");
 	}

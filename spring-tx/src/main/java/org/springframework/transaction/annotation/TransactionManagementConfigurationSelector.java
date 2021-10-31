@@ -34,6 +34,10 @@ import org.springframework.util.ClassUtils;
  * @see ProxyTransactionManagementConfiguration
  * @see TransactionManagementConfigUtils#TRANSACTION_ASPECT_CONFIGURATION_CLASS_NAME
  * @see TransactionManagementConfigUtils#JTA_TRANSACTION_ASPECT_CONFIGURATION_CLASS_NAME
+ *
+ * 在容器启动时的 refresh() 方法中调用 invokeBeanFactoryPostProcessors(beanFactory) 方法，
+ * 然后用 ConfigurationClassParser 解析所有带有 @Import 注解或者实现了 ImportSelector 接口的类，
+ * 通过以上过程就会解析到该类
  */
 public class TransactionManagementConfigurationSelector extends AdviceModeImportSelector<EnableTransactionManagement> {
 
@@ -47,6 +51,7 @@ public class TransactionManagementConfigurationSelector extends AdviceModeImport
 	protected String[] selectImports(AdviceMode adviceMode) {
 		switch (adviceMode) {
 			case PROXY:
+				// 调用 ProxyTransactionManagementConfiguration，为事务配置做初始化工作
 				return new String[] {AutoProxyRegistrar.class.getName(),
 						ProxyTransactionManagementConfiguration.class.getName()};
 			case ASPECTJ:

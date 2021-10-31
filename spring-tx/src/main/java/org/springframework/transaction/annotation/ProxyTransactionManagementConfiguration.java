@@ -56,6 +56,7 @@ public class ProxyTransactionManagementConfiguration extends AbstractTransaction
 	@Bean
 	@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 	public TransactionAttributeSource transactionAttributeSource() {
+		// 内部拥有一个 TransactionAnnotationParser 用于解析事务相关的资源
 		return new AnnotationTransactionAttributeSource();
 	}
 
