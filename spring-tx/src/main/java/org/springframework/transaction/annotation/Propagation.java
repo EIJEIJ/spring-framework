@@ -72,6 +72,7 @@ public enum Propagation {
 	 * @see org.springframework.transaction.jta.JtaTransactionManager#setTransactionManager
 	 *
 	 * 不管是否已有事务，都要开启新事务，老事务挂起
+	 * 新事务使用新的数据库连接
 	 */
 	REQUIRES_NEW(TransactionDefinition.PROPAGATION_REQUIRES_NEW),
 

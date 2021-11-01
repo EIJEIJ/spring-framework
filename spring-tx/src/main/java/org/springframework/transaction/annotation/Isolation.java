@@ -26,6 +26,8 @@ import org.springframework.transaction.TransactionDefinition;
  * @author Colin Sampaleanu
  * @author Juergen Hoeller
  * @since 1.2
+ *
+ * 在创建数据库连接池的时候，将这里设置的隔离级别参数传给数据库
  */
 public enum Isolation {
 

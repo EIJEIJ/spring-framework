@@ -354,7 +354,10 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 					method, targetClass, invocation, txAttr, (ReactiveTransactionManager) tm);
 		}
 
+		// 如果事务管理器不是上面的 ReactiveTransactionManager 类型，
+		// 就必须是 PlatformTransactionManager 类型，否则会抛异常
 		PlatformTransactionManager ptm = asPlatformTransactionManager(tm);
+		// 将方法的名字当作事务的名字
 		final String joinpointIdentification = methodIdentification(method, targetClass, txAttr);
 
 		// 这里区分不同类型的 PlatformTransactionManager，因为他们的调用方式不同
