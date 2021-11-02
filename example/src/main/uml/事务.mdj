@@ -1,0 +1,933 @@
+{
+	"_type": "Project",
+	"_id": "AAAAAAFF+h6SjaM2Hec=",
+	"name": "Untitled",
+	"ownedElements": [
+		{
+			"_type": "UMLModel",
+			"_id": "AAAAAAFF+qBWK6M3Z8Y=",
+			"_parent": {
+				"$ref": "AAAAAAFF+h6SjaM2Hec="
+			},
+			"name": "Model",
+			"ownedElements": [
+				{
+					"_type": "UMLClassDiagram",
+					"_id": "AAAAAAFF+qBtyKM79qY=",
+					"_parent": {
+						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
+					},
+					"name": "Main",
+					"defaultDiagram": true
+				}
+			]
+		},
+		{
+			"_type": "FCFlowchart",
+			"_id": "AAAAAAF83+OLIL+fNZ8=",
+			"_parent": {
+				"$ref": "AAAAAAFF+h6SjaM2Hec="
+			},
+			"name": "Flowchart1",
+			"ownedElements": [
+				{
+					"_type": "FCFlowchartDiagram",
+					"_id": "AAAAAAF83+OLIL+gWek=",
+					"_parent": {
+						"$ref": "AAAAAAF83+OLIL+fNZ8="
+					},
+					"name": "事务配置",
+					"ownedViews": [
+						{
+							"_type": "FCTerminatorView",
+							"_id": "AAAAAAF83+Okbr+m3fM=",
+							"_parent": {
+								"$ref": "AAAAAAF83+OLIL+gWek="
+							},
+							"model": {
+								"$ref": "AAAAAAF83+Okbr+kADc="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAF83+Okbr+nOAw=",
+									"_parent": {
+										"$ref": "AAAAAAF83+Okbr+m3fM="
+									},
+									"font": "Arial;13;0",
+									"left": 226,
+									"top": 66,
+									"width": 45,
+									"height": 13,
+									"text": "开始",
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"left": 216,
+							"top": 56,
+							"width": 65,
+							"height": 33,
+							"nameLabel": {
+								"$ref": "AAAAAAF83+Okbr+nOAw="
+							}
+						},
+						{
+							"_type": "FCProcessView",
+							"_id": "AAAAAAF83+PPcr+x3jQ=",
+							"_parent": {
+								"$ref": "AAAAAAF83+OLIL+gWek="
+							},
+							"model": {
+								"$ref": "AAAAAAF83+PPcr+vS7U="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAF83+PPcr+yLAw=",
+									"_parent": {
+										"$ref": "AAAAAAF83+PPcr+x3jQ="
+									},
+									"font": "Arial;13;0",
+									"left": 98,
+									"top": 194,
+									"width": 298.111328125,
+									"height": 26,
+									"text": "解析@EnableTransactionManagement注解import类 TransactionManagementConfigurationSelector",
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"left": 88,
+							"top": 184,
+							"width": 318.111328125,
+							"height": 46,
+							"nameLabel": {
+								"$ref": "AAAAAAF83+PPcr+yLAw="
+							}
+						},
+						{
+							"_type": "FCProcessView",
+							"_id": "AAAAAAF83+UfR7/OVJY=",
+							"_parent": {
+								"$ref": "AAAAAAF83+OLIL+gWek="
+							},
+							"model": {
+								"$ref": "AAAAAAF83+UfR7/MIZw="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAF83+UfR7/PO/E=",
+									"_parent": {
+										"$ref": "AAAAAAF83+UfR7/OVJY="
+									},
+									"font": "Arial;13;0",
+									"left": 114,
+									"top": 266,
+									"width": 274.091796875,
+									"height": 26,
+									"text": "实例化事务通知器 BeanFactoryTransactionAttributeSourceAdvisor",
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"left": 104,
+							"top": 256,
+							"width": 294.091796875,
+							"height": 46,
+							"nameLabel": {
+								"$ref": "AAAAAAF83+UfR7/PO/E="
+							}
+						},
+						{
+							"_type": "FCFlowView",
+							"_id": "AAAAAAF83+UfU7/Wnwk=",
+							"_parent": {
+								"$ref": "AAAAAAF83+OLIL+gWek="
+							},
+							"model": {
+								"$ref": "AAAAAAF83+UfU7/UppI="
+							},
+							"subViews": [
+								{
+									"_type": "EdgeLabelView",
+									"_id": "AAAAAAF83+UfVL/XS8A=",
+									"_parent": {
+										"$ref": "AAAAAAF83+UfU7/Wnwk="
+									},
+									"model": {
+										"$ref": "AAAAAAF83+UfU7/UppI="
+									},
+									"visible": false,
+									"font": "Arial;13;0",
+									"left": 262,
+									"top": 235,
+									"height": 13,
+									"alpha": 1.5707963267948966,
+									"distance": 15,
+									"hostEdge": {
+										"$ref": "AAAAAAF83+UfU7/Wnwk="
+									},
+									"edgePosition": 1
+								}
+							],
+							"font": "Arial;13;0",
+							"head": {
+								"$ref": "AAAAAAF83+UfR7/OVJY="
+							},
+							"tail": {
+								"$ref": "AAAAAAF83+PPcr+x3jQ="
+							},
+							"lineStyle": 2,
+							"points": "248:229;248:256",
+							"nameLabel": {
+								"$ref": "AAAAAAF83+UfVL/XS8A="
+							}
+						},
+						{
+							"_type": "FCProcessView",
+							"_id": "AAAAAAF83+hCgr/6ka8=",
+							"_parent": {
+								"$ref": "AAAAAAF83+OLIL+gWek="
+							},
+							"model": {
+								"$ref": "AAAAAAF83+hCgr/4j/s="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAF83+hCg7/7eJg=",
+									"_parent": {
+										"$ref": "AAAAAAF83+hCgr/6ka8="
+									},
+									"font": "Arial;13;0",
+									"left": 122,
+									"top": 338,
+									"width": 244.46728515625,
+									"height": 52,
+									"text": "初始化事务属性源 AnnotationTransactionAttributeSource 并注入SpringTransactionAnnotationParser 用于解析 @Transaction ",
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"left": 112,
+							"top": 328,
+							"width": 264.46728515625,
+							"height": 72,
+							"nameLabel": {
+								"$ref": "AAAAAAF83+hCg7/7eJg="
+							}
+						},
+						{
+							"_type": "FCFlowView",
+							"_id": "AAAAAAF83+hClcACxaA=",
+							"_parent": {
+								"$ref": "AAAAAAF83+OLIL+gWek="
+							},
+							"model": {
+								"$ref": "AAAAAAF83+hClcAA4u4="
+							},
+							"subViews": [
+								{
+									"_type": "EdgeLabelView",
+									"_id": "AAAAAAF83+hClcADtck=",
+									"_parent": {
+										"$ref": "AAAAAAF83+hClcACxaA="
+									},
+									"model": {
+										"$ref": "AAAAAAF83+hClcAA4u4="
+									},
+									"visible": false,
+									"font": "Arial;13;0",
+									"left": 262,
+									"top": 307,
+									"height": 13,
+									"alpha": 1.5707963267948966,
+									"distance": 15,
+									"hostEdge": {
+										"$ref": "AAAAAAF83+hClcACxaA="
+									},
+									"edgePosition": 1
+								}
+							],
+							"font": "Arial;13;0",
+							"head": {
+								"$ref": "AAAAAAF83+hCgr/6ka8="
+							},
+							"tail": {
+								"$ref": "AAAAAAF83+UfR7/OVJY="
+							},
+							"lineStyle": 2,
+							"points": "248:301;248:328",
+							"nameLabel": {
+								"$ref": "AAAAAAF83+hClcADtck="
+							}
+						},
+						{
+							"_type": "FCProcessView",
+							"_id": "AAAAAAF83+o7DMAtLtI=",
+							"_parent": {
+								"$ref": "AAAAAAF83+OLIL+gWek="
+							},
+							"model": {
+								"$ref": "AAAAAAF83+o7C8Arkao="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAF83+o7DMAuy4g=",
+									"_parent": {
+										"$ref": "AAAAAAF83+o7DMAtLtI="
+									},
+									"font": "Arial;13;0",
+									"left": 90,
+									"top": 434,
+									"width": 319.97265625,
+									"height": 13,
+									"text": "将事务属性源注入通知器，并同时构造通知器的Pointcut",
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"left": 80,
+							"top": 424,
+							"width": 339.97265625,
+							"height": 33,
+							"nameLabel": {
+								"$ref": "AAAAAAF83+o7DMAuy4g="
+							}
+						},
+						{
+							"_type": "FCProcessView",
+							"_id": "AAAAAAF83+r4UcBE4OY=",
+							"_parent": {
+								"$ref": "AAAAAAF83+OLIL+gWek="
+							},
+							"model": {
+								"$ref": "AAAAAAF83+r4UcBC0aU="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAF83+r4UcBFtP8=",
+									"_parent": {
+										"$ref": "AAAAAAF83+r4UcBE4OY="
+									},
+									"font": "Arial;13;0",
+									"left": 130,
+									"top": 490,
+									"width": 234,
+									"height": 39,
+									"text": "初始化事务拦截器 TransactionInterceptor 并将事务属性源、事务管理器注入拦截器",
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"left": 120,
+							"top": 480,
+							"width": 254,
+							"height": 59,
+							"nameLabel": {
+								"$ref": "AAAAAAF83+r4UcBFtP8="
+							}
+						},
+						{
+							"_type": "FCFlowView",
+							"_id": "AAAAAAF83+r4X8BMzLo=",
+							"_parent": {
+								"$ref": "AAAAAAF83+OLIL+gWek="
+							},
+							"model": {
+								"$ref": "AAAAAAF83+r4X8BKp3k="
+							},
+							"subViews": [
+								{
+									"_type": "EdgeLabelView",
+									"_id": "AAAAAAF83+r4X8BN9qw=",
+									"_parent": {
+										"$ref": "AAAAAAF83+r4X8BMzLo="
+									},
+									"model": {
+										"$ref": "AAAAAAF83+r4X8BKp3k="
+									},
+									"visible": false,
+									"font": "Arial;13;0",
+									"left": 262,
+									"top": 461,
+									"height": 13,
+									"alpha": 1.5707963267948966,
+									"distance": 15,
+									"hostEdge": {
+										"$ref": "AAAAAAF83+r4X8BMzLo="
+									},
+									"edgePosition": 1
+								}
+							],
+							"font": "Arial;13;0",
+							"head": {
+								"$ref": "AAAAAAF83+r4UcBE4OY="
+							},
+							"tail": {
+								"$ref": "AAAAAAF83+o7DMAtLtI="
+							},
+							"lineStyle": 2,
+							"points": "248:456;248:480",
+							"nameLabel": {
+								"$ref": "AAAAAAF83+r4X8BN9qw="
+							}
+						},
+						{
+							"_type": "FCProcessView",
+							"_id": "AAAAAAF83+u7QsBtkxg=",
+							"_parent": {
+								"$ref": "AAAAAAF83+OLIL+gWek="
+							},
+							"model": {
+								"$ref": "AAAAAAF83+u7QsBr1W0="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAF83+u7Q8BuveQ=",
+									"_parent": {
+										"$ref": "AAAAAAF83+u7QsBtkxg="
+									},
+									"font": "Arial;13;0",
+									"left": 138,
+									"top": 578,
+									"width": 221.01904296875,
+									"height": 13,
+									"text": "将事务拦截器注入通知器，作为Advice",
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"left": 128,
+							"top": 568,
+							"width": 241.01904296875,
+							"height": 33,
+							"nameLabel": {
+								"$ref": "AAAAAAF83+u7Q8BuveQ="
+							}
+						},
+						{
+							"_type": "FCFlowView",
+							"_id": "AAAAAAF83+0se8CZ3tA=",
+							"_parent": {
+								"$ref": "AAAAAAF83+OLIL+gWek="
+							},
+							"model": {
+								"$ref": "AAAAAAF83+0se8CX+Xk="
+							},
+							"subViews": [
+								{
+									"_type": "EdgeLabelView",
+									"_id": "AAAAAAF83+0se8Ca4Jw=",
+									"_parent": {
+										"$ref": "AAAAAAF83+0se8CZ3tA="
+									},
+									"model": {
+										"$ref": "AAAAAAF83+0se8CX+Xk="
+									},
+									"visible": false,
+									"font": "Arial;13;0",
+									"left": 262,
+									"top": 404,
+									"height": 13,
+									"alpha": 1.5707963267948966,
+									"distance": 15,
+									"hostEdge": {
+										"$ref": "AAAAAAF83+0se8CZ3tA="
+									},
+									"edgePosition": 1
+								}
+							],
+							"font": "Arial;13;0",
+							"head": {
+								"$ref": "AAAAAAF83+o7DMAtLtI="
+							},
+							"tail": {
+								"$ref": "AAAAAAF83+hCgr/6ka8="
+							},
+							"lineStyle": 2,
+							"points": "248:399;248:424",
+							"nameLabel": {
+								"$ref": "AAAAAAF83+0se8Ca4Jw="
+							}
+						},
+						{
+							"_type": "FCFlowView",
+							"_id": "AAAAAAF83+3mlMC7VTY=",
+							"_parent": {
+								"$ref": "AAAAAAF83+OLIL+gWek="
+							},
+							"model": {
+								"$ref": "AAAAAAF83+3mlMC55FU="
+							},
+							"subViews": [
+								{
+									"_type": "EdgeLabelView",
+									"_id": "AAAAAAF83+3mlMC88og=",
+									"_parent": {
+										"$ref": "AAAAAAF83+3mlMC7VTY="
+									},
+									"model": {
+										"$ref": "AAAAAAF83+3mlMC55FU="
+									},
+									"visible": false,
+									"font": "Arial;13;0",
+									"left": 262,
+									"top": 546,
+									"height": 13,
+									"alpha": 1.5707963267948966,
+									"distance": 15,
+									"hostEdge": {
+										"$ref": "AAAAAAF83+3mlMC7VTY="
+									},
+									"edgePosition": 1
+								}
+							],
+							"font": "Arial;13;0",
+							"head": {
+								"$ref": "AAAAAAF83+u7QsBtkxg="
+							},
+							"tail": {
+								"$ref": "AAAAAAF83+r4UcBE4OY="
+							},
+							"lineStyle": 2,
+							"points": "248:538;248:568",
+							"nameLabel": {
+								"$ref": "AAAAAAF83+3mlMC88og="
+							}
+						},
+						{
+							"_type": "FCTerminatorView",
+							"_id": "AAAAAAF83/YMwcDeZ+k=",
+							"_parent": {
+								"$ref": "AAAAAAF83+OLIL+gWek="
+							},
+							"model": {
+								"$ref": "AAAAAAF83/YMwMDcCiw="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAF83/YMwcDf9/I=",
+									"_parent": {
+										"$ref": "AAAAAAF83/YMwcDeZ+k="
+									},
+									"font": "Arial;13;0",
+									"left": 226,
+									"top": 634,
+									"width": 45,
+									"height": 13,
+									"text": "结束",
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"left": 216,
+							"top": 624,
+							"width": 65,
+							"height": 33,
+							"nameLabel": {
+								"$ref": "AAAAAAF83/YMwcDf9/I="
+							}
+						},
+						{
+							"_type": "FCFlowView",
+							"_id": "AAAAAAF83/Zyi8DtWcY=",
+							"_parent": {
+								"$ref": "AAAAAAF83+OLIL+gWek="
+							},
+							"model": {
+								"$ref": "AAAAAAF83/Zyi8DrITc="
+							},
+							"subViews": [
+								{
+									"_type": "EdgeLabelView",
+									"_id": "AAAAAAF83/Zyi8Dupk4=",
+									"_parent": {
+										"$ref": "AAAAAAF83/Zyi8DtWcY="
+									},
+									"model": {
+										"$ref": "AAAAAAF83/Zyi8DrITc="
+									},
+									"visible": false,
+									"font": "Arial;13;0",
+									"left": 262,
+									"top": 605,
+									"height": 13,
+									"alpha": 1.5707963267948966,
+									"distance": 15,
+									"hostEdge": {
+										"$ref": "AAAAAAF83/Zyi8DtWcY="
+									},
+									"edgePosition": 1
+								}
+							],
+							"font": "Arial;13;0",
+							"head": {
+								"$ref": "AAAAAAF83/YMwcDeZ+k="
+							},
+							"tail": {
+								"$ref": "AAAAAAF83+u7QsBtkxg="
+							},
+							"lineStyle": 2,
+							"points": "248:600;248:624",
+							"nameLabel": {
+								"$ref": "AAAAAAF83/Zyi8Dupk4="
+							}
+						},
+						{
+							"_type": "UMLNoteView",
+							"_id": "AAAAAAF83/c4gMEGkng=",
+							"_parent": {
+								"$ref": "AAAAAAF83+OLIL+gWek="
+							},
+							"font": "Arial;13;0",
+							"left": 104,
+							"top": 672,
+							"width": 294.33935546875,
+							"height": 51,
+							"text": "后续创建Bean都会走到初始化后扩展方法被 AnnotationAwareAspectJAutoProxyCreator拦截 并用解析器检查是否有 @Transaction 注解"
+						},
+						{
+							"_type": "UMLNoteLinkView",
+							"_id": "AAAAAAF83/c4hcEJbsw=",
+							"_parent": {
+								"$ref": "AAAAAAF83+OLIL+gWek="
+							},
+							"font": "Arial;13;0",
+							"head": {
+								"$ref": "AAAAAAF83/c4gMEGkng="
+							},
+							"tail": {
+								"$ref": "AAAAAAF83/YMwcDeZ+k="
+							},
+							"lineStyle": 1,
+							"points": "249:657;249:671"
+						},
+						{
+							"_type": "FCProcessView",
+							"_id": "AAAAAAF83/n3BcEY6gE=",
+							"_parent": {
+								"$ref": "AAAAAAF83+OLIL+gWek="
+							},
+							"model": {
+								"$ref": "AAAAAAF83/n3BcEWbUI="
+							},
+							"subViews": [
+								{
+									"_type": "LabelView",
+									"_id": "AAAAAAF83/n3BcEZXxU=",
+									"_parent": {
+										"$ref": "AAAAAAF83/n3BcEY6gE="
+									},
+									"font": "Arial;13;0",
+									"left": 98,
+									"top": 122,
+									"width": 290.4306640625,
+									"height": 26,
+									"text": "容器refresh()中 invokeBeanFactoryPostProcessors(beanFactory)",
+									"wordWrap": true
+								}
+							],
+							"font": "Arial;13;0",
+							"left": 88,
+							"top": 112,
+							"width": 310.4306640625,
+							"height": 46,
+							"nameLabel": {
+								"$ref": "AAAAAAF83/n3BcEZXxU="
+							}
+						},
+						{
+							"_type": "FCFlowView",
+							"_id": "AAAAAAF83/n3HMEgeGU=",
+							"_parent": {
+								"$ref": "AAAAAAF83+OLIL+gWek="
+							},
+							"model": {
+								"$ref": "AAAAAAF83/n3G8Eeck8="
+							},
+							"subViews": [
+								{
+									"_type": "EdgeLabelView",
+									"_id": "AAAAAAF83/n3HMEhoXA=",
+									"_parent": {
+										"$ref": "AAAAAAF83/n3HMEgeGU="
+									},
+									"model": {
+										"$ref": "AAAAAAF83/n3G8Eeck8="
+									},
+									"visible": false,
+									"font": "Arial;13;0",
+									"left": 262,
+									"top": 93,
+									"height": 13,
+									"alpha": 1.5707963267948966,
+									"distance": 15,
+									"hostEdge": {
+										"$ref": "AAAAAAF83/n3HMEgeGU="
+									},
+									"edgePosition": 1
+								}
+							],
+							"font": "Arial;13;0",
+							"head": {
+								"$ref": "AAAAAAF83/n3BcEY6gE="
+							},
+							"tail": {
+								"$ref": "AAAAAAF83+Okbr+m3fM="
+							},
+							"lineStyle": 2,
+							"points": "248:88;248:112",
+							"nameLabel": {
+								"$ref": "AAAAAAF83/n3HMEhoXA="
+							}
+						},
+						{
+							"_type": "FCFlowView",
+							"_id": "AAAAAAF83/r8dME6KfQ=",
+							"_parent": {
+								"$ref": "AAAAAAF83+OLIL+gWek="
+							},
+							"model": {
+								"$ref": "AAAAAAF83/r8dME42+w="
+							},
+							"subViews": [
+								{
+									"_type": "EdgeLabelView",
+									"_id": "AAAAAAF83/r8dME7wOM=",
+									"_parent": {
+										"$ref": "AAAAAAF83/r8dME6KfQ="
+									},
+									"model": {
+										"$ref": "AAAAAAF83/r8dME42+w="
+									},
+									"visible": false,
+									"font": "Arial;13;0",
+									"left": 262,
+									"top": 163,
+									"height": 13,
+									"alpha": 1.5707963267948966,
+									"distance": 15,
+									"hostEdge": {
+										"$ref": "AAAAAAF83/r8dME6KfQ="
+									},
+									"edgePosition": 1
+								}
+							],
+							"font": "Arial;13;0",
+							"head": {
+								"$ref": "AAAAAAF83+PPcr+x3jQ="
+							},
+							"tail": {
+								"$ref": "AAAAAAF83/n3BcEY6gE="
+							},
+							"lineStyle": 2,
+							"points": "248:157;248:184",
+							"nameLabel": {
+								"$ref": "AAAAAAF83/r8dME7wOM="
+							}
+						}
+					]
+				},
+				{
+					"_type": "FCTerminator",
+					"_id": "AAAAAAF83+Okbr+kADc=",
+					"_parent": {
+						"$ref": "AAAAAAF83+OLIL+fNZ8="
+					},
+					"name": "开始",
+					"ownedElements": [
+						{
+							"_type": "FCFlow",
+							"_id": "AAAAAAF83/n3G8Eeck8=",
+							"_parent": {
+								"$ref": "AAAAAAF83+Okbr+kADc="
+							},
+							"source": {
+								"$ref": "AAAAAAF83+Okbr+kADc="
+							},
+							"target": {
+								"$ref": "AAAAAAF83/n3BcEWbUI="
+							}
+						}
+					]
+				},
+				{
+					"_type": "FCProcess",
+					"_id": "AAAAAAF83+PPcr+vS7U=",
+					"_parent": {
+						"$ref": "AAAAAAF83+OLIL+fNZ8="
+					},
+					"name": "解析@EnableTransactionManagement注解import类 TransactionManagementConfigurationSelector",
+					"ownedElements": [
+						{
+							"_type": "FCFlow",
+							"_id": "AAAAAAF83+UfU7/UppI=",
+							"_parent": {
+								"$ref": "AAAAAAF83+PPcr+vS7U="
+							},
+							"source": {
+								"$ref": "AAAAAAF83+PPcr+vS7U="
+							},
+							"target": {
+								"$ref": "AAAAAAF83+UfR7/MIZw="
+							}
+						}
+					]
+				},
+				{
+					"_type": "FCProcess",
+					"_id": "AAAAAAF83+UfR7/MIZw=",
+					"_parent": {
+						"$ref": "AAAAAAF83+OLIL+fNZ8="
+					},
+					"name": "实例化事务通知器 BeanFactoryTransactionAttributeSourceAdvisor",
+					"ownedElements": [
+						{
+							"_type": "FCFlow",
+							"_id": "AAAAAAF83+hClcAA4u4=",
+							"_parent": {
+								"$ref": "AAAAAAF83+UfR7/MIZw="
+							},
+							"source": {
+								"$ref": "AAAAAAF83+UfR7/MIZw="
+							},
+							"target": {
+								"$ref": "AAAAAAF83+hCgr/4j/s="
+							}
+						}
+					]
+				},
+				{
+					"_type": "FCProcess",
+					"_id": "AAAAAAF83+hCgr/4j/s=",
+					"_parent": {
+						"$ref": "AAAAAAF83+OLIL+fNZ8="
+					},
+					"name": "初始化事务属性源 AnnotationTransactionAttributeSource 并注入SpringTransactionAnnotationParser 用于解析 @Transaction ",
+					"ownedElements": [
+						{
+							"_type": "FCFlow",
+							"_id": "AAAAAAF83+0se8CX+Xk=",
+							"_parent": {
+								"$ref": "AAAAAAF83+hCgr/4j/s="
+							},
+							"source": {
+								"$ref": "AAAAAAF83+hCgr/4j/s="
+							},
+							"target": {
+								"$ref": "AAAAAAF83+o7C8Arkao="
+							}
+						}
+					]
+				},
+				{
+					"_type": "FCProcess",
+					"_id": "AAAAAAF83+o7C8Arkao=",
+					"_parent": {
+						"$ref": "AAAAAAF83+OLIL+fNZ8="
+					},
+					"name": "将事务属性源注入通知器，并同时构造通知器的Pointcut",
+					"ownedElements": [
+						{
+							"_type": "FCFlow",
+							"_id": "AAAAAAF83+r4X8BKp3k=",
+							"_parent": {
+								"$ref": "AAAAAAF83+o7C8Arkao="
+							},
+							"source": {
+								"$ref": "AAAAAAF83+o7C8Arkao="
+							},
+							"target": {
+								"$ref": "AAAAAAF83+r4UcBC0aU="
+							}
+						}
+					]
+				},
+				{
+					"_type": "FCProcess",
+					"_id": "AAAAAAF83+r4UcBC0aU=",
+					"_parent": {
+						"$ref": "AAAAAAF83+OLIL+fNZ8="
+					},
+					"name": "初始化事务拦截器 TransactionInterceptor 并将事务属性源、事务管理器注入拦截器",
+					"ownedElements": [
+						{
+							"_type": "FCFlow",
+							"_id": "AAAAAAF83+3mlMC55FU=",
+							"_parent": {
+								"$ref": "AAAAAAF83+r4UcBC0aU="
+							},
+							"source": {
+								"$ref": "AAAAAAF83+r4UcBC0aU="
+							},
+							"target": {
+								"$ref": "AAAAAAF83+u7QsBr1W0="
+							}
+						}
+					]
+				},
+				{
+					"_type": "FCProcess",
+					"_id": "AAAAAAF83+u7QsBr1W0=",
+					"_parent": {
+						"$ref": "AAAAAAF83+OLIL+fNZ8="
+					},
+					"name": "将事务拦截器注入通知器，作为Advice",
+					"ownedElements": [
+						{
+							"_type": "FCFlow",
+							"_id": "AAAAAAF83/Zyi8DrITc=",
+							"_parent": {
+								"$ref": "AAAAAAF83+u7QsBr1W0="
+							},
+							"source": {
+								"$ref": "AAAAAAF83+u7QsBr1W0="
+							},
+							"target": {
+								"$ref": "AAAAAAF83/YMwMDcCiw="
+							}
+						}
+					]
+				},
+				{
+					"_type": "FCTerminator",
+					"_id": "AAAAAAF83/YMwMDcCiw=",
+					"_parent": {
+						"$ref": "AAAAAAF83+OLIL+fNZ8="
+					},
+					"name": "结束"
+				},
+				{
+					"_type": "FCProcess",
+					"_id": "AAAAAAF83/n3BcEWbUI=",
+					"_parent": {
+						"$ref": "AAAAAAF83+OLIL+fNZ8="
+					},
+					"name": "容器refresh()中 invokeBeanFactoryPostProcessors(beanFactory)",
+					"ownedElements": [
+						{
+							"_type": "FCFlow",
+							"_id": "AAAAAAF83/r8dME42+w=",
+							"_parent": {
+								"$ref": "AAAAAAF83/n3BcEWbUI="
+							},
+							"source": {
+								"$ref": "AAAAAAF83/n3BcEWbUI="
+							},
+							"target": {
+								"$ref": "AAAAAAF83+PPcr+vS7U="
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}
