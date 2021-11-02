@@ -1,11 +1,13 @@
 package cn.analysis.transaction;
 
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author zhaojie
  * @date 2021/11/02 15:58:11
  */
+@Component
 public class TransactionAnalysis {
 
 	@Transactional
