@@ -438,7 +438,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 		// PROPAGATION_REQUIRES_NEW 表示新建事务，如果当前存在事务，把当前事务挂起
 		if (definition.getPropagationBehavior() == TransactionDefinition.PROPAGATION_REQUIRES_NEW) {
 			if (debugEnabled) {
-				logger.debug("Suspending current transaction, creating new transaction with name [" +
+				logger.debug("Suspending current  transaction, creating new transaction with name [" +
 						definition.getName() + "]");
 			}
 			SuspendedResourcesHolder suspendedResources = suspend(transaction);
@@ -708,6 +708,8 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 		}
 
 		DefaultTransactionStatus defStatus = (DefaultTransactionStatus) status;
+		// 事务本来准备提交，但可以强制回滚
+		// 具体做法：TransactionAspectSupport.currentTransactionStatus().setRollbackOnly()
 		if (defStatus.isLocalRollbackOnly()) {
 			if (defStatus.isDebug()) {
 				logger.debug("Transactional code has requested rollback");
@@ -742,7 +744,9 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 
 				// 事务提交的准备工作由具体的事务管理器来完成
 				prepareForCommit(status);
+				// 调用自定义的提交前方法
 				triggerBeforeCommit(status);
+				// 调用自定义的（提交/回滚）完成前方法
 				triggerBeforeCompletion(status);
 				beforeCompletionInvoked = true;
 				// 嵌套事务的处理
@@ -799,14 +803,17 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 
 			// 触发器 afterCommit() 回调，其中抛出的异常已传播到调用方，但该事务仍被视为已提交
 			try {
+				// 调用自定义的提交后方法
 				triggerAfterCommit(status);
 			}
 			finally {
+				// 调用自定义的（提交/回滚）完成后方法
 				triggerAfterCompletion(status, TransactionSynchronization.STATUS_COMMITTED);
 			}
 
 		}
 		finally {
+			// 恢复被挂起的资源到当前线程中
 			cleanupAfterCompletion(status);
 		}
 	}
