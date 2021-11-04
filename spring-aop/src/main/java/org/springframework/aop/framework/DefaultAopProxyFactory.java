@@ -56,6 +56,10 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 		// 首先从 AdvisedSupport 对象中获取配置的 target 目标对象的类型 targetClass，
 		// 然后根据 targetClass 是否为接口采取不同的生成代理对象的策略
 		// 其实就是 ProxyFactory 中的配置
+
+		// config.isOptimize() 是否使用优化的代理策略
+		// config.isProxyTargetClass() 是否目标类本身被代理而不是目标类的接口
+		// hasNoUserSuppliedProxyInterfaces(config) 是否存在代理接口
 		if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {
 			Class<?> targetClass = config.getTargetClass();
 			if (targetClass == null) {

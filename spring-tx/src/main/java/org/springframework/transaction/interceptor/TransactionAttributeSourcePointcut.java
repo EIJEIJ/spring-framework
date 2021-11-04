@@ -24,6 +24,8 @@ import org.springframework.aop.support.StaticMethodMatcherPointcut;
 import org.springframework.dao.support.PersistenceExceptionTranslator;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.TransactionManager;
+import org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration;
+import org.springframework.transaction.annotation.SpringTransactionAnnotationParser;
 import org.springframework.util.ObjectUtils;
 
 /**
@@ -41,8 +43,14 @@ abstract class TransactionAttributeSourcePointcut extends StaticMethodMatcherPoi
 	}
 
 
+	/**
+	 * @see ProxyTransactionManagementConfiguration#transactionAttributeSource()
+	 * @see SpringTransactionAnnotationParser#parseTransactionAnnotation(org.springframework.core.annotation.AnnotationAttributes)
+	 */
 	@Override
 	public boolean matches(Method method, Class<?> targetClass) {
+		// 这里获取到的 TransactionAttributeSource 是在初始化 AnnotationTransactionAttributeSource 时，
+		// 通过 SpringTransactionAnnotationParser#parseTransactionAnnotation() 方法得到的
 		TransactionAttributeSource tas = getTransactionAttributeSource();
 		// 根据当前方法调用的 Method 和目标对象判断是否启动事务处理拦截器
 		return (tas == null || tas.getTransactionAttribute(method, targetClass) != null);

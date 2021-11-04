@@ -357,7 +357,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 		// 如果事务管理器不是上面的 ReactiveTransactionManager 类型，
 		// 就必须是 PlatformTransactionManager 类型，否则会抛异常
 		PlatformTransactionManager ptm = asPlatformTransactionManager(tm);
-		// 将方法的名字当作事务的名字
+		// 将方法的名字当作事务的名字，类.方法
 		final String joinpointIdentification = methodIdentification(method, targetClass, txAttr);
 
 		// 这里区分不同类型的 PlatformTransactionManager，因为他们的调用方式不同
@@ -657,8 +657,10 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 				logger.trace("Completing transaction for [" + txInfo.getJoinpointIdentification() +
 						"] after exception: " + ex);
 			}
+			// 这里判断是否回滚的依据是抛出的异常是否为 RuntimeException 或者 Error 类型
 			if (txInfo.transactionAttribute != null && txInfo.transactionAttribute.rollbackOn(ex)) {
 				try {
+					// 根据 TransactionStatus 回滚
 					txInfo.getTransactionManager().rollback(txInfo.getTransactionStatus());
 				}
 				catch (TransactionSystemException ex2) {
@@ -672,8 +674,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 				}
 			}
 			else {
-				// We don't roll back on this exception.
-				// Will still roll back if TransactionStatus.isRollbackOnly() is true.
+				// 如果不满足回滚条件，即使抛出异常也同样会提交
 				try {
 					txInfo.getTransactionManager().commit(txInfo.getTransactionStatus());
 				}
