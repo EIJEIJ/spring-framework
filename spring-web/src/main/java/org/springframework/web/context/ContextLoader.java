@@ -136,9 +136,8 @@ public class ContextLoader {
 	private static final Properties defaultStrategies;
 
 	static {
-		// Load default strategy implementations from properties file.
-		// This is currently strictly internal and not meant to be customized
-		// by application developers.
+		// DEFAULT_STRATEGIES_PATH 是默认配置文件的路径，值为 DEFAULT_STRATEGIES_PATH
+		// 在 ContextLoader.properties 配置文件中指定 WebApplicationContext = XmlWebApplicationContext
 		try {
 			ClassPathResource resource = new ClassPathResource(DEFAULT_STRATEGIES_PATH, ContextLoader.class);
 			defaultStrategies = PropertiesLoaderUtils.loadProperties(resource);
@@ -259,6 +258,8 @@ public class ContextLoader {
 	 * @see #CONFIG_LOCATION_PARAM
 	 */
 	public WebApplicationContext initWebApplicationContext(ServletContext servletContext) {
+		// ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE 是 Spring 预先设置好的存取根容器 WebApplicationContext 的路径
+		// WebApplicationContext 是单例
 		if (servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE) != null) {
 			throw new IllegalStateException(
 					"Cannot initialize context because there is already a root application context present - " +
@@ -273,25 +274,23 @@ public class ContextLoader {
 		long startTime = System.currentTimeMillis();
 
 		try {
-			// Store context in local instance variable, to guarantee that
-			// it is available on ServletContext shutdown.
+			// 创建 WebApplicationContext
 			if (this.context == null) {
 				this.context = createWebApplicationContext(servletContext);
 			}
 			if (this.context instanceof ConfigurableWebApplicationContext) {
 				ConfigurableWebApplicationContext cwac = (ConfigurableWebApplicationContext) this.context;
 				if (!cwac.isActive()) {
-					// The context has not yet been refreshed -> provide services such as
-					// setting the parent context, setting the application context id, etc
 					if (cwac.getParent() == null) {
-						// The context instance was injected without an explicit parent ->
-						// determine parent for root web application context, if any.
+						// 载入 WebApplicationContext 的双亲容器
 						ApplicationContext parent = loadParentContext(servletContext);
 						cwac.setParent(parent);
 					}
+					// 配置并初始化 IoC 容器，会调用 AbstractApplicationContext 的 refresh() 方法
 					configureAndRefreshWebApplicationContext(cwac, servletContext);
 				}
 			}
+			// 将容器存放到 servletContext 的指定位置中，以后应用都会根据这个常量获取 WebApplicationContext
 			servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);
 
 			ClassLoader ccl = Thread.currentThread().getContextClassLoader();
@@ -317,35 +316,27 @@ public class ContextLoader {
 	}
 
 	/**
-	 * Instantiate the root WebApplicationContext for this loader, either the
-	 * default context class or a custom context class if specified.
-	 * <p>This implementation expects custom contexts to implement the
-	 * {@link ConfigurableWebApplicationContext} interface.
-	 * Can be overridden in subclasses.
-	 * <p>In addition, {@link #customizeContext} gets called prior to refreshing the
-	 * context, allowing subclasses to perform custom modifications to the context.
-	 * @param sc current servlet context
-	 * @return the root WebApplicationContext
-	 * @see ConfigurableWebApplicationContext
+	 * 创建 WebApplicationContext 的实例化对象
 	 */
 	protected WebApplicationContext createWebApplicationContext(ServletContext sc) {
+		// 判断使用什么样的类在 Web 容器中作为 IoC 容器
 		Class<?> contextClass = determineContextClass(sc);
+		// 如果自定义的容器类型不是 ConfigurableWebApplicationContext 子类，则会抛异常，表示无法初始化
+		// 默认的 XmlWebApplicationContext 是 ConfigurableWebApplicationContext 接口的子类
 		if (!ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass)) {
 			throw new ApplicationContextException("Custom context class [" + contextClass.getName() +
 					"] is not of type [" + ConfigurableWebApplicationContext.class.getName() + "]");
 		}
+		// 直接实例化
 		return (ConfigurableWebApplicationContext) BeanUtils.instantiateClass(contextClass);
 	}
 
 	/**
-	 * Return the WebApplicationContext implementation class to use, either the
-	 * default XmlWebApplicationContext or a custom context class if specified.
-	 * @param servletContext current servlet context
-	 * @return the WebApplicationContext implementation class to use
-	 * @see #CONTEXT_CLASS_PARAM
-	 * @see org.springframework.web.context.support.XmlWebApplicationContext
+	 * 判断使用什么样的类在 Web 容器中作为 IoC 容器
+	 * 优先选择配置文件中的 contextClass 属性，否则使用默认的 IoC 容器，即 XmlWebApplicationContext
 	 */
 	protected Class<?> determineContextClass(ServletContext servletContext) {
+		// 选择配置文件中的 contextClass 属性
 		String contextClassName = servletContext.getInitParameter(CONTEXT_CLASS_PARAM);
 		if (contextClassName != null) {
 			try {
@@ -357,6 +348,7 @@ public class ContextLoader {
 			}
 		}
 		else {
+			// 在静态代码块中有配置默认属性 defaultStrategies，即 XmlWebApplicationContext
 			contextClassName = defaultStrategies.getProperty(WebApplicationContext.class.getName());
 			try {
 				return ClassUtils.forName(contextClassName, ContextLoader.class.getClassLoader());
@@ -382,7 +374,7 @@ public class ContextLoader {
 						ObjectUtils.getDisplayString(sc.getContextPath()));
 			}
 		}
-
+		// 设置 ServletContext 及配置文件的位置参数
 		wac.setServletContext(sc);
 		String configLocationParam = sc.getInitParameter(CONFIG_LOCATION_PARAM);
 		if (configLocationParam != null) {
@@ -398,6 +390,7 @@ public class ContextLoader {
 		}
 
 		customizeContext(sc, wac);
+		// 容器初始化入口
 		wac.refresh();
 	}
 
