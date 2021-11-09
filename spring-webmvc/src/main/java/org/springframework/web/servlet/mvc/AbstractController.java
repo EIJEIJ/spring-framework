@@ -163,7 +163,7 @@ public abstract class AbstractController extends WebContentGenerator implements 
 		checkRequest(request);
 		prepareResponse(response);
 
-		// Execute handleRequestInternal in synchronized block if required.
+		// 需要 Session 内的同步执行
 		if (this.synchronizeOnSession) {
 			HttpSession session = request.getSession(false);
 			if (session != null) {
@@ -173,7 +173,7 @@ public abstract class AbstractController extends WebContentGenerator implements 
 				}
 			}
 		}
-
+		// 调用用户逻辑
 		return handleRequestInternal(request, response);
 	}
 

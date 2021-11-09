@@ -323,11 +323,11 @@ public class DispatcherServlet extends FrameworkServlet {
 	@Nullable
 	private ThemeResolver themeResolver;
 
-	/** List of HandlerMappings used by this servlet. */
+	/** 此 DispatcherServlet 使用的 HandlerMapping 对象列表 */
 	@Nullable
 	private List<HandlerMapping> handlerMappings;
 
-	/** List of HandlerAdapters used by this servlet. */
+	/** 此 DispatcherServlet 使用的 HandlerAdapter 对象列表 */
 	@Nullable
 	private List<HandlerAdapter> handlerAdapters;
 
@@ -500,14 +500,29 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * <p>May be overridden in subclasses in order to initialize further strategy objects.
 	 */
 	protected void initStrategies(ApplicationContext context) {
+		// 处理文件上传，添加了 Multipart 解析后，每个检查会被检查是否包含 Multipart 并解析
 		initMultipartResolver(context);
+		// 多语言、国际化，有三种使用方式
+		// 1. AcceptHeaderLocaleResolver 通过 URL 参数控制国际化，比如 locale = zs_CN
+		// 2. 检查 Session 中预置的属性解析，如果不存在预置属性则根据 accept-language HTTP 头部确定
+		// 3. CookieLocaleResolver 通过浏览器的 cookie 获取 Locale 对象
 		initLocaleResolver(context);
+		// 主题 view 层
 		initThemeResolver(context);
+		// 解析 url 和 Method 的对应关系，为 HTTP 请求找到相应的 Controller
 		initHandlerMappings(context);
+		// 适配器匹配
+		// 1. HttpRequestHandlerAdapter 对 HttpRequestHandler 适配，简单地将 request、response 传递给 HttpRequestHandler
+		// 2. SimpleControllerHandlerAdapter 对 Controller 适配，将 request、response 传递给 Controller
 		initHandlerAdapters(context);
+		// 异常解析，只需要实现 HandlerExceptionResolver#resolveException() 方法，
+		// 该方法内部对异常类型进行判断，并尝试生成 ModelAndView 对象
 		initHandlerExceptionResolvers(context);
+		// 视图转发，根据视图名字匹配一个具体模板
 		initRequestToViewNameTranslator(context);
+		// 解析模板内容，DispatcherServlet 会根据 ModelAndView 选择合适的视图渲染
 		initViewResolvers(context);
+		// 请求存储，在使用重定向时非常重要
 		initFlashMapManager(context);
 	}
 
@@ -593,18 +608,20 @@ public class DispatcherServlet extends FrameworkServlet {
 	private void initHandlerMappings(ApplicationContext context) {
 		this.handlerMappings = null;
 
+		// detectAllHandlerMappings 默认为 true，表示从所有 IoC 容器里获取所有的 HandlerMappings
 		if (this.detectAllHandlerMappings) {
 			// Find all HandlerMappings in the ApplicationContext, including ancestor contexts.
 			Map<String, HandlerMapping> matchingBeans =
 					BeanFactoryUtils.beansOfTypeIncludingAncestors(context, HandlerMapping.class, true, false);
 			if (!matchingBeans.isEmpty()) {
 				this.handlerMappings = new ArrayList<>(matchingBeans.values());
-				// We keep HandlerMappings in sorted order.
+				// 保持 HandlerMappings 有序性
 				AnnotationAwareOrderComparator.sort(this.handlerMappings);
 			}
 		}
 		else {
 			try {
+				// 根据名称从当前容器中获取 HandlerMappings
 				HandlerMapping hm = context.getBean(HANDLER_MAPPING_BEAN_NAME, HandlerMapping.class);
 				this.handlerMappings = Collections.singletonList(hm);
 			}
@@ -613,8 +630,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			}
 		}
 
-		// Ensure we have at least one HandlerMapping, by registering
-		// a default HandlerMapping if no other mappings are found.
+		// 如果找不到，则通过注册默认的 handlerMappings 确保至少有一个
 		if (this.handlerMappings == null) {
 			this.handlerMappings = getDefaultStrategies(context, HandlerMapping.class);
 			if (logger.isTraceEnabled()) {
@@ -903,8 +919,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 
 	/**
-	 * Exposes the DispatcherServlet-specific request attributes and delegates to {@link #doDispatch}
-	 * for the actual dispatching.
+	 * 暴露 DispatcherServlet 特定的请求属性，并将其委托给 doDispatch() 方法进行实际的分发
 	 */
 	@Override
 	protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1008,24 +1023,27 @@ public class DispatcherServlet extends FrameworkServlet {
 		WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(request);
 
 		try {
+			// 为视图准备好一个 ModelAndView，这个 ModelAndView 持有 handler 处理请求的结果
 			ModelAndView mv = null;
 			Exception dispatchException = null;
 
 			try {
+				// 如果是文件上传，则将 request 转换为 MultipartHttpServletRequest
 				processedRequest = checkMultipart(request);
 				multipartRequestParsed = (processedRequest != request);
 
-				// Determine handler for the current request.
+				// 获取处理当前请求的 HandlerExecutionChain，该对象封装了处理该请求的 Controller 和 interceptors 拦截器链
 				mappedHandler = getHandler(processedRequest);
+				// 如果 handler 为空,则返回 404
 				if (mappedHandler == null) {
 					noHandlerFound(processedRequest, response);
 					return;
 				}
 
-				// Determine handler adapter for the current request.
+				// 获取处理 request 的 HandlerAdapter，普通的 Web 处理会交给 SimpleControllerHandlerAdapter 处理
 				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
 
-				// Process last-modified header, if supported by the handler.
+				// 获取请求方式，如：GET, POST, PUT
 				String method = request.getMethod();
 				boolean isGet = "GET".equals(method);
 				if (isGet || "HEAD".equals(method)) {
@@ -1034,32 +1052,32 @@ public class DispatcherServlet extends FrameworkServlet {
 						return;
 					}
 				}
-
+				// 拦截器的预处理方法
 				if (!mappedHandler.applyPreHandle(processedRequest, response)) {
 					return;
 				}
 
-				// Actually invoke the handler.
+				// 实际的 HandlerAdapter 处理请求，返回结果 ModelAndView
 				mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
 
 				if (asyncManager.isConcurrentHandlingStarted()) {
 					return;
 				}
-
+				// 结果 ModelAndView 的处理
 				applyDefaultViewName(processedRequest, mv);
+				// 拦截器的后处理方法
 				mappedHandler.applyPostHandle(processedRequest, response, mv);
 			}
 			catch (Exception ex) {
 				dispatchException = ex;
 			}
 			catch (Throwable err) {
-				// As of 4.3, we're processing Errors thrown from handler methods as well,
-				// making them available for @ExceptionHandler methods and other scenarios.
 				dispatchException = new NestedServletException("Handler dispatch failed", err);
 			}
 			processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);
 		}
 		catch (Exception ex) {
+			// 请求成功响应之后的方法
 			triggerAfterCompletion(processedRequest, response, mappedHandler, ex);
 		}
 		catch (Throwable err) {
@@ -1074,7 +1092,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				}
 			}
 			else {
-				// Clean up any resources used by a multipart request.
+				// 清除多文件请求使用的所有资源
 				if (multipartRequestParsed) {
 					cleanupMultipart(processedRequest);
 				}
@@ -1116,8 +1134,9 @@ public class DispatcherServlet extends FrameworkServlet {
 			}
 		}
 
-		// Did the handler return a view to render?
+		// 如果在 Handler 实例中返回了 ModelAndView，那么需要做页面的处理
 		if (mv != null && !mv.wasCleared()) {
+			// 处理页面跳转
 			render(mv, request, response);
 			if (errorView) {
 				WebUtils.clearErrorRequestAttributes(request);
