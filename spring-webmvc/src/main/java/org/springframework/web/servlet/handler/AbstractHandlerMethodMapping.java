@@ -361,11 +361,14 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	@Override
 	@Nullable
 	protected HandlerMethod getHandlerInternal(HttpServletRequest request) throws Exception {
+		// 截取用于匹配的有效路径
 		String lookupPath = getUrlPathHelper().getLookupPathForRequest(request);
 		request.setAttribute(LOOKUP_PATH, lookupPath);
 		this.mappingRegistry.acquireReadLock();
 		try {
+			// 获取可以处理该有效路径的处理器方法，method 就是 controller 里处理这个路径的方法
 			HandlerMethod handlerMethod = lookupHandlerMethod(lookupPath, request);
+			// 如果匹配到了对应的处理器方法，则保证方法所在的 bean 已被 IoC 容器初始化
 			return (handlerMethod != null ? handlerMethod.createWithResolvedBean() : null);
 		}
 		finally {
@@ -385,7 +388,10 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	@Nullable
 	protected HandlerMethod lookupHandlerMethod(String lookupPath, HttpServletRequest request) throws Exception {
 		List<Match> matches = new ArrayList<>();
+		// 尝试去 urlLookup map 匹配有效路径
+		// urlLookup map：<@RequestMapping 标注的接口路径, RequestMappingInfo 对象>
 		List<T> directPathMatches = this.mappingRegistry.getMappingsByUrl(lookupPath);
+		// 如果匹配到了就放入 matches 列表
 		if (directPathMatches != null) {
 			addMatchingMappings(directPathMatches, matches, request);
 		}
@@ -394,9 +400,11 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 			addMatchingMappings(this.mappingRegistry.getMappings().keySet(), matches, request);
 		}
 
+		// 如果 matches 不为空，则表示匹配到了对应的 RequestMappingInfo
 		if (!matches.isEmpty()) {
 			Match bestMatch = matches.get(0);
 			if (matches.size() > 1) {
+				// 排序，获取到最佳匹配
 				Comparator<Match> comparator = new MatchComparator(getMappingComparator(request));
 				matches.sort(comparator);
 				bestMatch = matches.get(0);
@@ -416,7 +424,9 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 				}
 			}
 			request.setAttribute(BEST_MATCHING_HANDLER_ATTRIBUTE, bestMatch.handlerMethod);
+			// 解析路径中的变量
 			handleMatch(bestMatch.mapping, lookupPath, request);
+			// 返回最匹配的处理器方法
 			return bestMatch.handlerMethod;
 		}
 		else {
