@@ -396,6 +396,15 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 	public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName) {
 		InjectionMetadata metadata = findAutowiringMetadata(beanName, bean.getClass(), pvs);
 		try {
+			// 对注入点进行注入
+			// 字段：
+			// 	1.遍历所有 AutowiredFieldElement，封装成 DependencyDescriptor
+			//  2.去 IoC 容器中查找当前字段对应的 bean，将 DependencyDescriptor 和结果对象的 beanName 封装成 ShortcutDependencyDescriptor 对象缓存
+			//	3.利用反射将对象赋值给字段
+			// 	4.如果是原型，下次创建 Bean 时，直接去缓存里拿 ShortcutDependencyDescriptor 对象创建
+			// 方法：
+			// 	1.遍历所有 AutowiredMethodElement，将方法的每个参数封装成 MethodParameter 对象
+			//  2.对于每个 MethodParameter 对象都与字段注入的步骤一致
 			metadata.inject(bean, beanName, pvs);
 		}
 		catch (BeanCreationException ex) {
@@ -470,27 +479,36 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 		do {
 			final List<InjectionMetadata.InjectedElement> currElements = new ArrayList<>();
 
+			// 找出该类的所有字段 field
 			ReflectionUtils.doWithLocalFields(targetClass, field -> {
 				MergedAnnotation<?> ann = findAutowiredAnnotation(field);
+				// 如果字段上面有自动注入的注解
 				if (ann != null) {
+					// 跳过 static 字段
 					if (Modifier.isStatic(field.getModifiers())) {
 						if (logger.isInfoEnabled()) {
 							logger.info("Autowired annotation is not supported on static fields: " + field);
 						}
 						return;
 					}
+					// 获取注解中的 required 属性
 					boolean required = determineRequiredStatus(ann);
+					// 构造成 AutowiredFieldElement 对象作为一个注入点
 					currElements.add(new AutowiredFieldElement(field, required));
 				}
 			});
 
+			// 找出该类的所有方法 method
 			ReflectionUtils.doWithLocalMethods(targetClass, method -> {
+				// 如果是桥接方法，则需要找到原方法
 				Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(method);
 				if (!BridgeMethodResolver.isVisibilityBridgeMethodPair(method, bridgedMethod)) {
 					return;
 				}
+				// 找到方法上的所有自动注入注解
 				MergedAnnotation<?> ann = findAutowiredAnnotation(bridgedMethod);
 				if (ann != null && method.equals(ClassUtils.getMostSpecificMethod(method, clazz))) {
+					// 静态方法跳过
 					if (Modifier.isStatic(method.getModifiers())) {
 						if (logger.isInfoEnabled()) {
 							logger.info("Autowired annotation is not supported on static methods: " + method);
@@ -503,17 +521,22 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 									method);
 						}
 					}
+					// 获取注解中的 required 属性
 					boolean required = determineRequiredStatus(ann);
 					PropertyDescriptor pd = BeanUtils.findPropertyForMethod(bridgedMethod, clazz);
+					// 构造成 AutowiredMethodElement 对象作为一个注入点
 					currElements.add(new AutowiredMethodElement(method, required, pd));
 				}
 			});
 
 			elements.addAll(0, currElements);
+			// 遍历所有父类
 			targetClass = targetClass.getSuperclass();
 		}
 		while (targetClass != null && targetClass != Object.class);
 
+		// 将找出来的 AutowiredFieldElement 和 AutowiredMethodElement 集合封装成一个 InjectionMetadata 对象
+		// 作为当前 bean 的所有注入点集合，并缓存
 		return InjectionMetadata.forElements(elements, clazz);
 	}
 
